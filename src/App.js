@@ -59,6 +59,10 @@ export default App;
 // git checkout -b feature_branch_name 
 // git push -u origin faltu_para
 
-git init
-git add .
-git commit -m "before deploy in firebase"
+// git init
+// git add .
+// git commit -m "before deploy in firebase"
+// git remote add origin https://github.com/alaminse/react-todoApp.git
+// git branch aa // make a new branch name is  aa
+// git checkout -b aa //switch branch which name is aa
+
