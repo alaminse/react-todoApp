@@ -12,7 +12,7 @@ function App() {
 
   // when the app loads, we need to listen to the database and fetch new todos as they get added/remove
   useEffect( () => {
-     db.collection('todos').onSnapshot(snapshot => {
+     db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
       //console.log(snapshot.docs.map(doc => doc.data()));
       setTodos(snapshot.docs.map(doc => doc.data().todo))
     })
@@ -58,3 +58,7 @@ export default App;
 // git branch aa  
 // git checkout -b feature_branch_name 
 // git push -u origin faltu_para
+
+git init
+git add .
+git commit -m "before deploy in firebase"
