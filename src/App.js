@@ -5,6 +5,7 @@ import { Input, InputLabel, FormControl } from '@material-ui/core';
 import Todo from './Todo';
 import db from './firebase';
 import firebase from "firebase";
+import logo from './img/logo.png';
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -13,14 +14,13 @@ function App() {
   // when the app loads, we need to listen to the database and fetch new todos as they get added/remove
   useEffect( () => {
      db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-      //console.log(snapshot.docs.map(doc => doc.data()));
-      setTodos(snapshot.docs.map(doc => doc.data().todo))
+      //console.log(snapshot.docs.map(doc => doc.data().timestamp));
+      setTodos(snapshot.docs.map(doc => ({id: doc.id, todo:doc.data().todo})))
     })
   }, [])
 
   const addTodo = (event) => {
     // this will fire off when we click the button
-    //console.log('I\'m clicked');
     event.preventDefault(); //will stop the REFRESHING 
     db.collection('todos').add({
       todo: input,
@@ -33,9 +33,10 @@ function App() {
   return (
     <div className="App-header">
       <form action="">
-        <h1>Hello To Do app</h1>
+        <img src={logo} alt=""/>
+        <h1>Hello To Do app 📝</h1>
         <FormControl>
-          <InputLabel>Write To Do</InputLabel>
+          <InputLabel>Write To Do 📝</InputLabel>
           <Input value={input} onChange={event => setInput(event.target.value)}/>
         </FormControl>
         <Button style={{ marginTop: '10px' }} onClick={addTodo} type='submit' disabled={!input} variant="contained" color="primary">
@@ -46,7 +47,7 @@ function App() {
       <ul>
         {
           todos.map(todo => (
-            <Todo text={todo}/>
+            <Todo todo={todo}/>
           ))
         }
       </ul>
