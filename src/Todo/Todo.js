@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { List, ListItem, ListItemText, Modal, Button, Input } from '@material-ui/core';
-import db from './firebase';
+import db from '../firebase';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { makeStyles } from '@material-ui/core/styles';
+import './Todo.css';
+import EditIcon from '@material-ui/icons/Edit';
 
 // modal style
 const useStyles = makeStyles((theme) => ({
     paper: {
+      alignItems: 'center',
       position: 'absilute',
       width: 400,
       backgroundColor: theme.palette.background.paper,
@@ -30,28 +33,32 @@ function Todo(props) {
             todo: input
         }, {merge: true});
         setOpen(false);
+        setInput('');
     }
 
     return (
-        <>
+        <div className="content">
         <Modal
         open={open}
-        onClose={e => setOpen(false)} >
+        onClose={e => setOpen(false)}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description" >
             <div className={classes.paper}>
-                <h1>modle</h1>
+                <h2>EDIT To-Do 📝</h2>
                 <Input placeholder={props.todo.todo} value={input} onChange={event => setInput(event.target.value)}/>
-                <Button style={{cursor: 'pointer'}} variant="contained" color="secondary" onClick={updateTodo}>Update Todo</Button>
+                <Button disabled={!input} style={{cursor: 'pointer'}} variant="contained" color="secondary" onClick={updateTodo}>Update Todo</Button>
+                <Button style={{cursor: 'pointer'}} variant="contained" onClick={e=> setOpen(false)}>Cancle</Button>
             </div>
         </Modal>
 
-        <List>
+        <List className="item">
             <ListItem> 
                 <ListItemText primary={props.todo.todo} secondary="To Do 📝" />
+                <EditIcon onClick={e=> setOpen(true)} color="primary" />
+                <DeleteForeverIcon style={{cursor: 'pointer'}} variant="contained" color="secondary" onClick={event => db.collection('todos').doc(props.todo.id).delete()} />
             </ListItem>
-            <button onClick={e=> setOpen(true)}>Edit me</button>
-            <DeleteForeverIcon style={{cursor: 'pointer'}} variant="contained" color="secondary" onClick={event => db.collection('todos').doc(props.todo.id).delete()} />
         </List>
-        </>
+        </div>
     )
 }
 
